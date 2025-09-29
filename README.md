@@ -38,3 +38,22 @@ Comme dans beaucoup de domaines, la numérisation a aussi apporté un plus grand
 - moins d'utilisation de papier
 - aliénation de la vie quotidienne à la technologie
 
+
+# Scenarios
+
+Ajouter un évènement :
+  Utilisateurs ouvre le site
+  Utilisateur ajoute un évènement avec date, heure, description, récurrence
+  Utilisateur valide cet évènement
+  
+Supprimer un évènement :
+  Utilisateurs ouvre le site 
+  Utilisateur sélectionne un évènement
+  Utilisateur supprime cet évènement
+  
+Exporter un edt :
+	Utilisateur ouvre le site
+	Utilisateurs sélectionne « exporter » dans le format choisi (pdf, ics)
+	
+(autres scénarios possibles : Regarder un emploi de temps, Charger un emploi du temps, Modifier un évènement)
+
