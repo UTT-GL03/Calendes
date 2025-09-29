@@ -42,18 +42,18 @@ Comme dans beaucoup de domaines, la numérisation a aussi apporté un plus grand
 # Scenarios
 
 Ajouter un évènement :
-1.Utilisateurs ouvre le site
-2.Utilisateur ajoute un évènement avec date, heure, description, récurrence
-3.Utilisateur valide cet évènement
+1. Utilisateurs ouvre le site
+2. Utilisateur ajoute un évènement avec date, heure, description, récurrence
+3. Utilisateur valide cet évènement
   
 Supprimer un évènement :
-1.Utilisateurs ouvre le site 
-2.Utilisateur sélectionne un évènement
-3.Utilisateur supprime cet évènement
+1. Utilisateurs ouvre le site 
+2. Utilisateur sélectionne un évènement
+3. Utilisateur supprime cet évènement
   
 Exporter un edt :
-1.Utilisateur ouvre le site
-2.Utilisateurs sélectionne « exporter » dans le format choisi (pdf, ics)
+1. Utilisateur ouvre le site
+2. Utilisateurs sélectionne « exporter » dans le format choisi (pdf, ics)
 	
 (autres scénarios possibles : Regarder un emploi de temps, Charger un emploi du temps, Modifier un évènement)
 
