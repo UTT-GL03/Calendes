@@ -57,3 +57,13 @@ Exporter un edt :
 	
 (autres scénarios possibles : Regarder un emploi de temps, Charger un emploi du temps, Modifier un évènement)
 
+# Impact environnemental des scénarios sur les sites actuels
+
+L'EcoIndex d'une page (de A à G) est calculé en fonction du positionnement de cette page parmi les pages mondiales concernant :
+
+- la complexité de la page(structure et élements),
+- le poids des données transférées,
+- le nombre de requêtes HTTP
+  
+Nous avons choisi de comparer l'impact des scénarios sur divers site d'agenda en ligne : monedt.utt.fr, Google Agenda et Cozi, dont [voici les résultats](EcoIndex.md)
+
