@@ -67,3 +67,22 @@ L'EcoIndex d'une page (de A à G) est calculé en fonction du positionnement de 
   
 Nous avons choisi de comparer l'impact des scénarios sur divers site d'agenda en ligne : monedt.utt.fr, Google Agenda et Cozi, dont [voici les résultats](EcoIndex.md)
 
+
+## Modèle économique
+
+Google Agenda : Le produit est gratuit et ne présente pas de source de  revenu, il s'agit d'un produit d'appel pour l'ecosystème Google.
+
+zimbra.utt : Encore une fois ce service ne présente pas de source de revenu car il est nécessaire et donc fournit par l'université. L'université est elle financé par différentes sources comme les inscriptions ou les subventions publiques
+
+cozi : C'est le produit d'une entreprise. C'est un produit freemium, c'est-à-dire qu'il est utilisable gratuitement mais possède une version premium payante. En cas d'utilisation gratuite, l'entreprise vend de la publicité.
+
+Les agendas sont un produit simple, Les utilisateurs attendent donc qu'ils soient gratuits et grandement accessibles. Pour ces raisons, on constate différents modèles :
+
+- un accès gratuit avec un outil inclus dans un écosystème
+- un accès Freemium avec des publicités ou un abonnement payant
+
+On peut trouver une grande quantité d'agenda électronique, c'est donc un secteur très concurrentiel. Ce secteur est cependant dominé par un petit nombre de grands acteurs qui incluent l'agenda dans un ecosystème d'outils.
+Les plus petits acteurs doivent donc trouver un moyen de se différencier. Pour ce faire, il peuvent cibler un public spécifique, développer des fonctionnalités spécifiques et essayer de s'intégrer à l'utilisation des outils plus populaires. Cozi, par exemple, cible en particulier les familles, ils ont pour cela développer des fonctionnalités ciblées comme des listes de courses ou de recttes. Ils ont aussi permis d'intégrer leur agendas à d'autres applications avec le format ical. De cette manière, ils n'essayent pas forcément de concurrencer google agenda mais se permettent aussi de s'intégrer à cet outil.
+
+Nous pensons que simplement rajouter un outil à la liste existante serait contradictoire avec l'objectif de réduire l'impact écologique. Notre objectif sera donc de proposer des améliorations aux services déjà existants.
+
