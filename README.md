@@ -27,7 +27,7 @@ La numérisation a eu un impact important sur les emploi du temps :
 l'impact le plus évident est la substitution des agendas papier pour des applications, un agenda se garde désormais à travers les années.
 Ils nécessitent désormais des comptes et sont accessibles depuis n'importe où avec un accès à un internet.
 Ce changement a aussi eu pour conséquence un plus grande convivialité, facilitant le partage ou même la modification d'un évènement ou d'un emploi du temps.
-Comme dans beaucoup de domaines, la numérisation a aussi apporté un plus grand contrôle, permettant à chacun de modifier les réglages pour adapter son agenda à ses préférences
+Comme dans beaucoup de domaines, la numérisation a aussi apporté un plus grand contrôle, permettant à chacun de modifier les réglages pour adapter son agenda à ses préférences. D'autres changements sont aussi la rapidité d'accessibilité et les notifications des agendas modernes qui entraine une certaine aliénation de la vie quotidienne à la technologie
 
 - visibilité par plus de monde de son calendrier (partage simplifié)
 - plus de options/d'information
@@ -66,7 +66,7 @@ L'EcoIndex d'une page (de A à G) est calculé en fonction du positionnement de 
 - le nombre de requêtes HTTP
   
 Nous avons choisi de comparer l'impact des scénarios sur divers site d'agenda en ligne : monedt.utt.fr, Google Agenda et Cozi, dont [voici les résultats](EcoIndex.md)
-
+La conclusion est que plus les interfaces sont visuellement complexes, plus leur impact sur l'environnement est négatif.
 
 ## Modèle économique
 
