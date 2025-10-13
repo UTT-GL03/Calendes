@@ -70,6 +70,13 @@ La conclusion est que plus les interfaces sont visuellement complexes, plus leur
 
 ## Modèle économique
 
+| Service | modèle économique | Particularité
+| --- | --- | ---
+| google agenda | <ul><li>Produit d'appel </li><li>autre? (opaque)</li></ul> | L'outil s'intègre dans un écosystème, cet outil permet de renforcer l'emprise de la compagnie sur les utilisateurs 
+| zimbra.utt | <ul><li> outil openSource</li><li>Autre? (opaque)</li></ul> | Il y a des coûts d'hébergements et d'entretiens
+| Cozi | <ul><li>Publicités </li><li>abonnement</li></ul> | l'entreprise fait du profit soit par le revenu généré par les pubs, soit par les revenus des abonnées premium
+
+
 Google Agenda : Le produit est gratuit et ne présente pas de source de  revenu, il s'agit d'un produit d'appel pour l'ecosystème Google.
 
 zimbra.utt : Encore une fois ce service ne présente pas de source de revenu car il est nécessaire et donc fournit par l'université. L'université est elle financé par différentes sources comme les inscriptions ou les subventions publiques
