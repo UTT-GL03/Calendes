@@ -95,11 +95,21 @@ Nous pensons que simplement rajouter un outil à la liste existante serait contr
 
 # Structure de l'application et des données
 
-	## Structure des données 
+## Structure des données 
 
 Pour notre application, nous avons pour l'instant identifié trois ressources : les comptes, les agendas et les évènements.
 Les comptes sont liés à l'utilisateur, ils permettent de l'identifier et d'acceder ses données. Ils sont liés à un seul agendas. ils auront une http-URI avec pour chemin /{compte_id}
 Les agendas sont liés à un compte, il s'agit d'une liste d'évènements. ils auront une http-URI avec pour chemin /{compte_id}/agenda
 Les évènements sont liés à un agenda, il se composent d'attributs comme date.heure de début et de fin, titre, description, récurrence. Ils auront une http-URI avec pour chemin /{compte_id}/agenda/nom_evenement_{num}
 
+## Maquette de l'interface
 
+Au vu des différents services comparés, des exigences environnementales exprimées plus haut et des scénarios retenus, nous avons défini pour notre prototype une maquette de l'interface :
+
+<img width="831" height="481" alt="calendes drawio" src="https://github.com/user-attachments/assets/0968b6d7-ed61-4578-af3a-0df45ecf9006" />
+
+
+L'interface est divisée en trois parties distinctes:
+- "Semaine actuelle" est une visualisation des événements de la semaine actuelle. Ces événements sont affichés sur la plage horaire où ils ont lieu, avec leur titre. Les événements avec un fond plein sont des événements dit "récurrents", ils se répètent tous les x unité de temps. Au contraire, les événements éphémères de la semaine sont présentés avec sans fond, qu'avec un contour.
+- "Semaines prochaines" est une liste d'événements ponctuels qui arrivent dans les semaines qui suivent. Ces événements sont présentés sous forme d'une liste déroulante dans l'ordre chronologique.
+- "Création/Modification" est l'outil principal. Sans sélection d'un événement déjà présent, il permet d'en créer un avec un titre, une date et heures, une récurrence s'il y en a une, un lieu et des informations connexes écrites. Si un événement est sélectionné, il permet de visualiser les détails de cet événement et de pouvoir les modifier. 
