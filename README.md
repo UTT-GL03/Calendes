@@ -93,3 +93,13 @@ Les plus petits acteurs doivent donc trouver un moyen de se différencier. Pour 
 
 Nous pensons que simplement rajouter un outil à la liste existante serait contradictoire avec l'objectif de réduire l'impact écologique. Notre objectif sera donc de proposer des améliorations aux services déjà existants.
 
+# Structure de l'application et des données
+
+	## Structure des données 
+
+Pour notre application, nous avons pour l'instant identifié trois ressources : les comptes, les agendas et les évènements.
+Les comptes sont liés à l'utilisateur, ils permettent de l'identifier et d'acceder ses données. Ils sont liés à un seul agendas. ils auront une http-URI avec pour chemin /{compte_id}
+Les agendas sont liés à un compte, il s'agit d'une liste d'évènements. ils auront une http-URI avec pour chemin /{compte_id}/agenda
+Les évènements sont liés à un agenda, il se composent d'attributs comme date.heure de début et de fin, titre, description, récurrence. Ils auront une http-URI avec pour chemin /{compte_id}/agenda/nom_evenement_{num}
+
+
