@@ -22,6 +22,18 @@ function App() {
             </thead>
             <tbody>
               <tr>
+                <td>0:00</td>
+              </tr>
+              <tr>
+                <td>2:00</td>
+              </tr>
+              <tr>
+                <td>4:00</td>
+              </tr>
+              <tr>
+                <td>6:00</td>
+              </tr>
+              <tr>  
                 <td>8:00</td>
                 <td>HTML tables</td>
 
@@ -102,9 +114,14 @@ function App() {
         <h2>coming</h2>
         <ol>
           <li> <div>event 1 </div></li>
+          <li> <div>event 2 </div></li>
+          <li> <div>event 3 </div></li>
           
         </ol>
-      </div>
+        <br />
+        <br />
+        <br />
+     </div>
     </>
   )
 }
