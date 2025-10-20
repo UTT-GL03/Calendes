@@ -1,4 +1,5 @@
 import './App.css'
+import data from './assets/test dummy/sample_data.json'
 
 function App() {
   return (
