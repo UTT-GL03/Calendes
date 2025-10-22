@@ -1,47 +1,341 @@
-#Week{
-  text-align: left;
-  color: #333;
+:root {
+  /* couleurs */
+  --primary: #747bff;
+  --primary-dark: #535bf2;
+  --secondary: #2d3748;
+  --background: #f8fafc;
+  --surface: white;
+  --text: #333;
+  --text-light: #718096;
+  --border: #e1e5e9;
+  
+  /* espaces */
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --radius: 8px;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  background-color: var(--background);
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  margin: 0;
 }
 
 #root {
-  max-width: 1280px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: var(--space-md);
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+
+
+/* en tête */
+.app-header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+  padding: var(--space-md);
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  border-radius: 10px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.app-header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.app-header p {
+  margin: 0.5rem 0 0 0;
+  opacity: 0.9;
+  font-size: 1.1rem;
+}
+
+/* layout principal */
+.screen {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-xl);
+  padding: var(--space-md) 0;
+  margin-bottom: var(--space-xl);
+}
+
+/* tableau semaine */
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  table-layout: fixed;
+}
+
+.day, .hours {
+  border: 1px solid var(--border);
+  padding: 12px 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.day {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  width: calc((100% - 80px) / 7);
+}
+
+.hours {
+  width: 80px;
+  background: var(--secondary);
+  color: white;
+}
+
+td {
+  border: 1px solid var(--border);
+  text-align: center;
+  padding: 4px;
+  height: 80px;
+  vertical-align: top;
+  background: var(--surface);
+  width: calc((100% - 80px) / 7);
+  transition: background-color 0.2s ease;
+}
+
+.hour-cell {
+  background: #f7fafc;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.day-cell:hover {
+  background-color: #f7fafc;
+}
+
+/* evenements */
+.event {
+  background-color: #e6f2ff;
+  padding: 6px 4px;
+  margin: 2px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  border-left: 4px solid var(--primary);
+  transition: all 0.2s ease;
+  text-align: left;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 70px;
+}
+
+.event:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.event.recurrent {
+  background-color: #f0fff4;
+  border-left-color: #48bb78;
+}
+
+.event.onetime {
+  background-color: #fffaf0;
+  border-left-color: #ed8936;
+}
+
+.event strong {
+  display: block;
+  font-size: 0.7rem;
+  margin-bottom: 2px;
+}
+
+.event-time {
+  font-size: 0.65rem;
+  color: #666;
+  display: block;
+}
+
+/* formulaire */
+.form-section {
+  height: fit-content;
+  max-width: 500px;
+}
+
+.form-group {
+  margin-bottom: var(--space-md);
+  text-align: left;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.form-group input,
+.form-group textarea {
+  /*width: 100%;
+  padding: 10px 12px; */
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease;
+}
+
+.DuréeDeMerde{
+  max-width: 75px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(116, 123, 255, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  cursor: pointer;
+}
+
+.form-buttons {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+/* evènements à venir */
+.upcoming-events {
+  margin-top: var(--space-md);
+}
+
+.upcoming-event {
+  background: #f7fafc;
+  padding: var(--space-md);
+  border-radius: var(--radius);
+  border-left: 4px solid var(--primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.upcoming-event:hover {
+  background: #edf2f7;
+  transform: translateX(4px);
+}
+
+.event-date {
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.event-title {
+  color: var(--secondary);
+  font-size: 1rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.event-details {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+.no-events {
+  text-align: center;
+  color: #a0aec0;
+  font-style: italic;
+  padding: var(--space-xl);
+}
+
+@media (max-width: 1024px) {
+  .screen {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
   }
-  to {
-    transform: rotate(360deg);
+  
+  .week-view {
+    order: 2;
+  }
+  
+  .form-section {
+    order: 1;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (max-width: 768px) {
+  #root {
+    padding: var(--space-xs);
   }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  
+  .app-header h1 {
+    font-size: 2rem;
+  }
+  
+  .screen {
+    padding: 0;
+  }
+  
+  .card {
+    padding: var(--space-md);
+  }
+  
+  table {
+    font-size: 0.8rem;
+  }
+  
+  .day, .hours {
+    padding: 8px 4px;
+    font-size: 0.8rem;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-xs);
+  }
+  
+  .form-buttons {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  
+  .form-buttons button {
+    flex: 1;
+    padding: 12px 20px;
+    border: 2px solid;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: transparent;
+  }
 }
