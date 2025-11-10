@@ -36,4 +36,4 @@ jobs:
       with:
         args: http://localhost/ 200 30000 500
     - name: Watch frontend initial payload
-      run: curl --silence localhost
+      run: curl --silent localhost
