@@ -24,6 +24,10 @@ jobs:
       run: |
         cd moz-todo-react
         npm install
+    - name: Generate sample
+      run: |
+        mkdir moz-todo-react/public
+        npx --yes dummy-json sample_data.hbs > moz-todo-react/public/sample_data.json 
     - name: Build frontend
       run: |
         cd moz-todo-react
