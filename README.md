@@ -112,4 +112,13 @@ Au vu des différents services comparés, des exigences environnementales exprim
 L'interface est divisée en trois parties distinctes:
 - "Semaine actuelle" est une visualisation des événements de la semaine actuelle. Ces événements sont affichés sur la plage horaire où ils ont lieu, avec leur titre. Les événements avec un fond plein sont des événements dit "récurrents", ils se répètent tous les x unité de temps. Au contraire, les événements éphémères de la semaine sont présentés avec sans fond, qu'avec un contour.
 - "Semaines prochaines" est une liste d'événements ponctuels qui arrivent dans les semaines qui suivent. Ces événements sont présentés sous forme d'une liste déroulante dans l'ordre chronologique.
-- "Création/Modification" est l'outil principal. Sans sélection d'un événement déjà présent, il permet d'en créer un avec un titre, une date et heures, une récurrence s'il y en a une, un lieu et des informations connexes écrites. Si un événement est sélectionné, il permet de visualiser les détails de cet événement et de pouvoir les modifier. 
+- "Création/Modification" est l'outil principal. Sans sélection d'un événement déjà présent, il permet d'en créer un avec un titre, une date et heures, une récurrence s'il y en a une, un lieu et des informations connexes écrites. Si un événement est sélectionné, il permet de visualiser les détails de cet événement et de pouvoir les modifier.
+
+## Passage à l'échelle
+
+Nous pouvons maintenant observer ce que le passage à l'échelle aura comme impact sur l'application.
+
+Dans notre cas, ce passage à l'échelle passera par une augmentation du nombre d'évènement. En effet, après une utilisation continue, l'utilisateur aura mis tous ses événements et les événements passés seront toujours enregistré dans les données. Cela aura pour conséquence d'augmenter linéairement le volume de données et aura une influence négative sur l'impact écologique de notre site.
+Nous estimons que cette augmentation sera en effet linéaire. En effet, nous considérons que chaque semaine correspond à un nombre à peu près fixe de nouveaux évènements.
+
+Nous voulons donc, afin d'observer cette tendance, automatiser l'évaluation de notre site par l'outil EcoIndex.
