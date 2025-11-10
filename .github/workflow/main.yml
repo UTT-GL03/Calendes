@@ -1,0 +1,39 @@
+name: test_consultation
+on:
+  push:
+  
+
+jobs:
+
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download sources
+      uses: actions/checkout@v5
+
+    - name: Set up NodeJS
+      uses: actions/setup-node@v6
+      with:
+        node-version: 24
+        cache: npm
+        cache-dependency-path: moz-todo-react/package-lock.json
+
+    - name: Install frontend dependencies
+      run: |
+        cd moz-todo-react
+        npm install
+    - name: Build frontend
+      run: |
+        cd moz-todo-react
+        npm run build
+    - name: Start frontend
+      run: |
+        docker-compose up --detach
+    - name: Wait for frontend
+        uses: docker://H05P1/wait-for-response:1
+      with:
+        args: http://localhost/ 200 30000 500
+    - name: Watch frontend initial payload
+      run: curl --silence localhost

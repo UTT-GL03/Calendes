@@ -9,16 +9,20 @@ function App() {
 
   // Chargement
   useEffect(() => {
-    setEvents(data.events);
+    fetch('sample_data.json')
+      .then(x => x.json())
+      .then(data => {
+        setEvents(data.events);
+      })
   }, []);
 
   // Formulaire
   const handleFormSubmit = (formData) => {
     if (selectedEvent) {
       // Modification
-      setEvents(prev => prev.map(event => 
-        event === selectedEvent ? { 
-          ...selectedEvent, 
+      setEvents(prev => prev.map(event =>
+        event === selectedEvent ? {
+          ...selectedEvent,
           title: formData.title,
           date: formatDateForStorage(formData.date),
           Time: formData.startTime,
@@ -39,9 +43,9 @@ function App() {
         location: formData.place,
         description: formData.description
       };
-      setEvents(prev => [...prev, newEvent]); //marche pas pour une raison mystérieuse
+      setEvents(prev => [...prev, newEvent]);
     }
-    
+
     setSelectedEvent(null);
   };
 
@@ -77,22 +81,22 @@ function App() {
   const getUpcomingEvents = () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     const nextWeek = new Date();
     nextWeek.setDate(today.getDate() + 7);
     nextWeek.setHours(23, 59, 59, 999);
-    
+
     return events
       .filter(event => { //algo pour les mettre dans l'ordre
         try {
           const [day, month, year] = event.date.split('/');
           const eventDate = new Date(year, month - 1, day);
-          return eventDate >= today && eventDate <= nextWeek;
+          return eventDate >= today;
         } catch {
           return false;
         }
       })
-      .sort((a, b) => { 
+      .sort((a, b) => {
         try {
           const [dayA, monthA, yearA] = a.date.split('/');
           const [dayB, monthB, yearB] = b.date.split('/');
@@ -110,7 +114,7 @@ function App() {
   const getWeekEvents = () => {
     const weekEvents = {};
     const days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-    
+
     // Structure
     days.forEach(day => {
       weekEvents[day] = {};
@@ -124,7 +128,7 @@ function App() {
         const dayIndex = eventDate.getDay();
         const dayName = days[dayIndex === 0 ? 6 : dayIndex - 1];
         const hour = event.Time.split(':')[0];
-        
+
         if (!weekEvents[dayName][hour]) {
           weekEvents[dayName][hour] = [];
         }
@@ -146,7 +150,7 @@ function App() {
         <h1>Calendes</h1>
         <p>Votre calendrier écologique et efficace</p>
       </header>
-      
+
       <div className='screen'>
         <div className="week-view">
           <h2>Semaine Actuelle</h2>
@@ -169,9 +173,9 @@ function App() {
                   <td className="hour-cell">{hour}:00</td>
                   {['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'].map(day => (
                     <td key={day} className="day-cell">
-                      {weekEvents[day] && weekEvents[day][hour] && 
+                      {weekEvents[day] && weekEvents[day][hour] &&
                         weekEvents[day][hour].map((event, index) => (
-                          <div 
+                          <div
                             key={index}
                             className={`event ${event.récurrence === "true" ? 'recurrent' : 'onetime'}`} //couleur recurence
                             onClick={() => handleEventSelect(event)}
@@ -189,9 +193,9 @@ function App() {
             </tbody>
           </table>
         </div>
-        
+
         <div className="form-section">
-          <EventForm 
+          <EventForm
             selectedEvent={selectedEvent}
             onSubmit={handleFormSubmit}
             onDelete={handleDeleteEvent}
@@ -199,29 +203,29 @@ function App() {
           />
         </div>
       </div>
-      
+
       <div className="upcoming-events">
         <h2>Événements à Venir</h2>
         {upcomingEvents.length === 0 ? (
           <p className="no-events">Aucun événement à venir cette semaine</p>
         ) : (
           <ol>
-              {upcomingEvents.map((event, index) => (
+            {upcomingEvents.map((event, index) => (
               <li key={index}>
-                  <div 
-                    className="upcoming-event"
-                    onClick={() => handleEventSelect(event)}
-                  >
-                    <div className="event-date">{event.date}</div>
-                    <strong className="event-title">{event.title}</strong>
-                    <div className="event-details">
-                      <span className="event-time">{event.Time}</span>
-                      {event.location && <span className="event-location">• {event.location}</span>}
-                    </div>
+                <div
+                  className="upcoming-event"
+                  onClick={() => handleEventSelect(event)}
+                >
+                  <div className="event-date">{event.date}</div>
+                  <strong className="event-title">{event.title}</strong>
+                  <div className="event-details">
+                    <span className="event-time">{event.Time}</span>
+                    {event.location && <span className="event-location">• {event.location}</span>}
                   </div>
-                </li>
-              ))}
-            </ol>
+                </div>
+              </li>
+            ))}
+          </ol>
         )}
       </div>
     </>
