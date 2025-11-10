@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import data from './assets/test dummy/sample_data.json'
+import data from '../public/sample_data.json'
 import EventForm from './Composition/Evenement'
 
 function App() {
