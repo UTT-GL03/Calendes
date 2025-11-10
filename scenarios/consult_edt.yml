@@ -1,0 +1,16 @@
+- name: Consulter l'emploi du temps
+  url: http://localhost/
+  actions:
+    - name: Consulter la page
+      type: scroll
+    - name: Choisir un évènement
+      type: click
+      element: table>tbody>tr>td>div
+    - name: Modifier l'évènement
+      type: text
+      element: textarea
+      content: "nouvelle description de l'évènement"
+    - name: Sauvegarder les modifications
+      type: click
+      element: .submit-btn
+   
