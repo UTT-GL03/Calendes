@@ -28,6 +28,24 @@ jobs:
       run: |
         cd moz-todo-react
         npm run build
+    - name: Save frontend build for later
+      uses: actions/upload-artifact@v4
+      with:
+        name: frontend-build
+        path: moz-todo-react/dist
+
+      measure_ecoindex:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+          - name: Download sources
+            uses: actions/checkout@v5
+          - name: Get frontend build
+            uses: actions/download-artifact@v4
+          
+        with:
+            name: frontend-build
+            path: frontend/dist
     - name: Start frontend
       run: |
         docker compose up --detach
