@@ -13,6 +13,7 @@ runs:
       run: |
         export COUCHDB_USER="leon"
         export COUCHDB_PASSWORD="GL03!"
+        docker compose up --detach
       shell: bash
     - name: Wait for frontend
       uses: docker://benel/wait-for-response:1
