@@ -30,8 +30,7 @@ jobs:
         name: frontend-build
         path: moz-todo-react/dist
       
-      build_samples:
-
+  build_samples:
     runs-on: ubuntu-latest
     steps:
       - name: Download sources
