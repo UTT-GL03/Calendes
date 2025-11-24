@@ -2,7 +2,6 @@ services:
 
   static_hosting:
     image: nginx:latest
-    container_name: static_hosting
     volumes:
       - ./moz-todo-react/dist:/usr/share/nginx/html:ro
       - ./settings/nginx.conf:/etc/nginx/conf.d/default.conf:ro
@@ -16,3 +15,21 @@ services:
     environment:
       - COUCHDB_USER
       - COUCHDB_PASSWORD
+    healthcheck:
+      test: curl -f http://localhost:5984/_up || exit 1
+      start_period: 10s
+      start_interval: 2s
+
+  accessible_backend:
+    image: curlimages/curl
+    entrypoint: ["/bin/sh","-c"]
+    command:
+      - |
+        alias put="curl -X PUT -u '${COUCHDB_USER}:${COUCHDB_PASSWORD}'"
+        put backend:5984/_node/nonode@nohost/_config/chttpd/enable_cors --data '"true"'
+        put backend:5984/_node/nonode@nohost/_config/cors/origins --data '"*"'
+        put backend:5984/calendes
+        put backend:5984/calendes/_security --data '{"members":{"roles":[]},"admins":{"roles":["_admin"]}}'
+    depends_on:
+      backend:
+        condition: service_healthy

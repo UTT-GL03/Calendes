@@ -5,3 +5,4 @@ scenarios:
     path: ./scenarios/consult_edt.js
 containers:
   - calendes-static_hosting-1
+  - calendes-backend-1

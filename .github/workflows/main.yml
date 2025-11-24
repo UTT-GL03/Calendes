@@ -20,10 +20,6 @@ jobs:
       run: |
         cd moz-todo-react
         npm install
-    - name: Generate sample
-      run: |
-        mkdir moz-todo-react/public
-        npx --yes dummy-json moz-todo-react/sample_data.hbs > moz-todo-react/public/sample_data.json 
     - name: Build frontend
       run: |
         cd moz-todo-react
@@ -33,9 +29,27 @@ jobs:
       with:
         name: frontend-build
         path: moz-todo-react/dist
-    
+      
+      build_samples:
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download sources
+        uses: actions/checkout@v5
+      - name: Generate sample
+        run: |
+          npx --yes dummy-json sample_data.hbs > sample_data.json
+      - name: Save samples for later
+        uses: actions/upload-artifact@v4
+        with:
+          name: samples
+          path: sample_data.json
+
   measure_ecoindex:
-    needs: build
+    needs: 
+      - build
+      - build_samples
+
     runs-on: ubuntu-latest
     steps:
       - name: Download sources
@@ -57,3 +71,30 @@ jobs:
         with:
           name: EcoIndex
           path: Consulterl'emploidutemps.html
+    
+  measure_energy_consumption:
+    needs:
+      - build
+      - build_samples
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download sources
+        uses: actions/checkout@v5
+      - name: Start application
+        uses: ./.github/actions/start
+      - name: Install GreenFrame CLI
+        run: |
+          wget https://github.com/benel/greenframe-cli/archive/refs/heads/post-app.zip
+          unzip post-app.zip
+          cd greenframe-cli-post-app
+          npm install -g corepack
+          yarn
+          yarn build 
+      - name: Run GreenFrame CLI
+        run: |
+          ./greenframe-cli-post-app/bin/run analyze > Consumption.txt
+      - name: Save results
+        uses: actions/upload-artifact@v4
+        with:
+          name: Consumption
+          path: Consumption.txt
