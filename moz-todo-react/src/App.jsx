@@ -113,6 +113,14 @@ function App() {
   const getWeekEvents = () => {
     const weekEvents = {};
     const days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+    
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - dayOfWeek); // Se positionne sur le Lundi
+    startOfWeek.setHours(0, 0, 0, 0);
+
+   const endOfWeek = new Date(startOfWeek);
+   endOfWeek.setDate(startOfWeek.getDate() + 6); // Se positionne sur le Dimanche
+   endOfWeek.setHours(23, 59, 59, 999);
 
     // Structure
     days.forEach(day => {
@@ -124,17 +132,20 @@ function App() {
       try {
         const [day, month, year] = event.date.split('/');
         const eventDate = new Date(year, month - 1, day);
-        const dayIndex = eventDate.getDay();
-        const dayName = days[dayIndex === 0 ? 6 : dayIndex - 1];
-        const hour = event.Time.split(':')[0];
 
-        if (!weekEvents[dayName][hour]) {
-          weekEvents[dayName][hour] = [];
-        }
-        weekEvents[dayName][hour].push(event);
-      } catch (error) {
-        console.warn('Erreur de format de date:', event.date);
+        if (eventDate >= startOfWeek && eventDate <= endOfWeek) { 
+          const dayIndex = eventDate.getDay();
+          const dayName = days[dayIndex === 0 ? 6 : dayIndex - 1];
+          const hour = event.Time.split(':')[0];
+
+          if (!weekEvents[dayName][hour]) {
+            weekEvents[dayName][hour] = [];
+          }
+          weekEvents[dayName][hour].push(event);
       }
+    } catch (error) {
+      console.warn('Erreur de format de date:', event.date);
+    }
     });
 
     return weekEvents;
