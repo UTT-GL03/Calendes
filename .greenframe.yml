@@ -1,0 +1,7 @@
+baseURL: http://localhost
+projectName: CALENDES
+scenarios:
+  - name: Consulter l'emploi du temps
+    path: ./scenarios/consult_edt.js
+containers:
+  - calendes-static_hosting-1

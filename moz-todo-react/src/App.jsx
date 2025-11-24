@@ -9,10 +9,10 @@ function App() {
 
   // Chargement
   useEffect(() => {
-    fetch('sample_data.json')
+    fetch(`http://localhost:5984/calendes/${id}`)
       .then(x => x.json())
       .then(data => {
-        setEvents(data.events);
+        setEvents(data.docs);
       })
   }, []);
 
