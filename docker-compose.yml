@@ -33,3 +33,12 @@ services:
     depends_on:
       backend:
         condition: service_healthy
+
+  init_data:
+    image: curlimages/curl
+    entrypoint: ["/bin/sh","-c"]
+    command: |
+      curl -X POST http://localhost:5984/calendes/_bulk_docs -u '${COUCHDB_USER}:${COUCHDB_PASSWORD}' -H "Content-Type: application/json" -d @public/sample_data.json
+    depends_on:
+      accessible_backend:
+        condition: service_completed_successfully

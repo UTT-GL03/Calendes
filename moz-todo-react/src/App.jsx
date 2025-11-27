@@ -8,12 +8,21 @@ function App() {
 
   // Chargement
   useEffect(() => {
-    fetch(`http://localhost:5984/calendes/${id}`)
-      .then(x => x.json())
-      .then(data => {
-        setEvents(data.docs);
-      })
-  }, []);
+  fetch('http://localhost:5984/calendes/_all_docs?include_docs=true')
+    .then(x => x.json())
+    .then(data => {
+      if (data.rows) {
+        const allEvents = data.rows.map(row => row.doc);
+        setEvents(allEvents || []);
+      } else {
+        setEvents([]); // fallback to empty array
+      }
+    })
+    .catch(err => {
+      console.error('Error fetching events:', err);
+      setEvents([]); // fallback
+    });
+}, []);
 
   // Formulaire
   const handleFormSubmit = (formData) => {
@@ -113,42 +122,33 @@ function App() {
   const getWeekEvents = () => {
     const weekEvents = {};
     const days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-    
-    const startOfWeek = new Date(now);
-    startOfWeek.setDate(now.getDate() - dayOfWeek); // Se positionne sur le Lundi
-    startOfWeek.setHours(0, 0, 0, 0);
-
-   const endOfWeek = new Date(startOfWeek);
-   endOfWeek.setDate(startOfWeek.getDate() + 6); // Se positionne sur le Dimanche
-   endOfWeek.setHours(23, 59, 59, 999);
-
+  
     // Structure
     days.forEach(day => {
       weekEvents[day] = {};
     });
-
+    
+    if (!Array.isArray(events)) return weekEvents;    
+    
     // placement evenement à revoir
     events.forEach(event => {
-      try {
-        const [day, month, year] = event.date.split('/');
-        const eventDate = new Date(year, month - 1, day);
+    try {
+      const [day, month, year] = event.date.split('/');
+      const eventDate = new Date(year, month - 1, day);
+      const dayIndex = eventDate.getDay();
+      const dayName = days[dayIndex === 0 ? 6 : dayIndex - 1];
+      const hour = event.Time?.split(':')[0]; // optional chaining
 
-        if (eventDate >= startOfWeek && eventDate <= endOfWeek) { 
-          const dayIndex = eventDate.getDay();
-          const dayName = days[dayIndex === 0 ? 6 : dayIndex - 1];
-          const hour = event.Time.split(':')[0];
-
-          if (!weekEvents[dayName][hour]) {
-            weekEvents[dayName][hour] = [];
-          }
-          weekEvents[dayName][hour].push(event);
+      if (!weekEvents[dayName][hour]) {
+        weekEvents[dayName][hour] = [];
       }
+      weekEvents[dayName][hour].push(event);
     } catch (error) {
       console.warn('Erreur de format de date:', event.date);
     }
-    });
+  });
 
-    return weekEvents;
+  return weekEvents;
   };
 
   const weekEvents = getWeekEvents();
