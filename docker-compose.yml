@@ -13,8 +13,8 @@ services:
     ports:
       - 5984:5984
     environment:
-      - COUCHDB_USER
-      - COUCHDB_PASSWORD
+      - COUCHDB_USER=leon
+      - COUCHDB_PASSWORD=GL03!
     healthcheck:
       test: curl -f http://localhost:5984/_up || exit 1
       start_period: 10s
@@ -33,3 +33,12 @@ services:
     depends_on:
       backend:
         condition: service_healthy
+
+  #updated_samples:
+  #  image: curlimages/curl
+  #  entrypoint: ["/bin/sh","-c"]
+  #  volumes:
+   #   - ./moz-todo-react/public/sample_data.json:/sample_data.json
+   # command:
+    #  - |
+     #   curl -X POST http://backend:5984/calendes/_bulk_docs -H "Content-Type: application/json" -d @/sample_data.json -u '${COUCHDB_USER}:${COUCHDB_PASSWORD}'
