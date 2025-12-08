@@ -41,21 +41,27 @@ Comme dans beaucoup de domaines, la numérisation a aussi apporté un plus grand
 
 # Scenarios
 
-Ajouter un évènement :
+Chargement de la page :
 1. Utilisateurs ouvre le site
-2. Utilisateur ajoute un évènement avec date, heure, description, récurrence
-3. Utilisateur valide cet évènement
+2. Les évènement s'affichent immédiatement
   
-Supprimer un évènement :
-1. Utilisateurs ouvre le site 
-2. Utilisateur sélectionne un évènement
-3. Utilisateur supprime cet évènement
+Consulter la page :
+1. Utilisateurs ouvre le site
+2. Une synthèse visuelle immédiate lui donne une vision claire de son emploi du temps
   
-Exporter un edt :
-1. Utilisateur ouvre le site
-2. Utilisateurs sélectionne « exporter » dans le format choisi (pdf, ics)
-	
-(autres scénarios possibles : Regarder un emploi de temps, Charger un emploi du temps, Modifier un évènement)
+Choisir un évènement :
+1. L'utilisateur repère l'événement qui l'intéresse dans la vue "Semaine actuelle" ou "Semaines prochaines"
+2. Il clique sur l'événement souhaité
+3. Le module "Création/Modification" se met à jour automatiquement pour afficher tous les paramètres et les boutons d'action deviennent actifs ("Modifier", "Supprimer")
+
+Mofidier l'évènement : 
+
+1. Après avoir sélectionné l'événement (scénario 3), l'utilisateur ajuste les informations qu'il souhaite changer; champs texte, date et récurrence;
+
+Sauvegarder les modifications :
+
+1. L'utilisateur clique sur le bouton "Sauvegarder" après avoir effectué ses modifications
+2. L'événement modifié apparaît immédiatement dans les vues "Semaine actuelle" et "Semaines prochaines"
 
 # Impact environnemental des scénarios sur les sites actuels
 
@@ -121,4 +127,26 @@ Nous pouvons maintenant observer ce que le passage à l'échelle aura comme impa
 Dans notre cas, ce passage à l'échelle passera par une augmentation du nombre d'évènement. En effet, après une utilisation continue, l'utilisateur aura mis tous ses événements et les événements passés seront toujours enregistré dans les données. Cela aura pour conséquence d'augmenter linéairement le volume de données et aura une influence négative sur l'impact écologique de notre site.
 Nous estimons que cette augmentation sera en effet linéaire. En effet, nous considérons que chaque semaine correspond à un nombre à peu près fixe de nouveaux évènements.
 
-Nous voulons donc, afin d'observer cette tendance, automatiser l'évaluation de notre site par l'outil EcoIndex.
+Nous voulons donc, afin d'observer cette tendance, automatiser l'évaluation de notre site par l'outil EcoIndex :
+
+### Évolution de l'EcoIndex lors du passage à l'échelle
+
+Nous pouvons récolter et consulter les mesures nécessaires à la production de l'EcoIndex, [avant](https://github.com/UTT-GL03/Calendes/actions/runs/19237856405) et [après](https://github.com/UTT-GL03/Calendes/actions/runs/19238831912).
+
+|   | EcoIndex| GES (gCO2e) | Taille du DOM | Requêtes | Taille de la page (ko)
+|---|--------:|------------:|--------------:|---------:|---------------------:
+| 1. Chargement de la page			 | 83 A 🟢 <br/> 44 D 🟡 | 1.34<br/>2.12  | 176 <br/> 2843 | 3       | 207.31<br/> 207.31
+| 2. Consulter la page 	             | 83 A 🟢 <br/> 39 D 🟡 | 1.34<br/>2.22  | 176 <br/> 2843 | 5       | 214.819<br/> 1143.014
+| 3. Choisir un évènement			 | 83 A 🟢 <br/> 39 D 🟡 | 1.34<br/>2.22  | 178 <br/> 2845 | 5       | 214.819<br/> 1143.014
+| 4. Modifier l'évènement            | 83 A 🟢 <br/> 39 D 🟡 | 1.34<br/>2.22  | 178 <br/> 2845 | 5       | 214.819<br/> 1143.014
+| 5. Sauvegarder les modifications   | 83 A 🟢 <br/> 39 D 🟡 | 1.34<br/>2.22  | 176 <br/> 2843 | 5       | 214.819<br/> 1143.014
+
+Le passage à l'échelle montre bien l'augmentation du DOM de la page passant de 176 à 2 843 ainsi que le poids de la page passant de 215 Ko à 1 143 Ko à l'ouverture.
+
+
+
+
+
+
+
+
