@@ -5,59 +5,32 @@ import EventForm from './Composition/Evenement'
 function App() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const dbUrl = 'http://localhost:5984/calendes/';
 
-  // Chargement
-  useEffect(() => {
-  fetch('http://localhost:5984/calendes/_all_docs?include_docs=true')
-    .then(x => x.json())
-    .then(data => {
-      if (data.rows) {
-        const allEvents = data.rows.map(row => row.doc);
-        setEvents(allEvents || []);
-      } else {
-        setEvents([]); // fallback to empty array
-      }
-    })
-    .catch(err => {
-      console.error('Error fetching events:', err);
-      setEvents([]); // fallback
-    });
-}, []);
-
-  // Formulaire
-  const handleFormSubmit = (formData) => {
-    if (selectedEvent) {
-      // Modification
-      setEvents(prev => prev.map(event =>
-        event === selectedEvent ? {
-          ...selectedEvent,
-          title: formData.title,
-          date: formatDateForStorage(formData.date),
-          Time: formData.startTime,
-          duration: formData.duration,
-          récurrence: formData.recurring ? "true" : "false",
-          location: formData.place,
-          description: formData.description
-        } : event
-      ));
-    } else {
-      // Ajout
-      const newEvent = {
-        title: formData.title,
-        date: formatDateForStorage(formData.date),
-        Time: formData.startTime,
-        duration: formData.duration,
-        récurrence: formData.recurring ? "true" : "false",
-        location: formData.place,
-        description: formData.description
-      };
-      setEvents(prev => [...prev, newEvent]);
-    }
-
-    setSelectedEvent(null);
+  // Helper function to fetch events
+  const fetchEvents = () => {
+    fetch(dbUrl + '_all_docs?include_docs=true')
+      .then(x => x.json())
+      .then(data => {
+        if (data.rows) {
+          const allEvents = data.rows.map(row => row.doc).filter(doc => !doc._id.startsWith('_'));
+          setEvents(allEvents || []);
+        } else {
+          setEvents([]);
+        }
+      })
+      .catch(err => {
+        console.error('Error fetching events:', err);
+        setEvents([]);
+      });
   };
 
-  // Formatage date
+  // Chargement Initial (useEffect)
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  // Formatage date pour le stockage (DD/MM/YYYY)
   const formatDateForStorage = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
@@ -67,36 +40,107 @@ function App() {
     return `${day}/${month}/${year}`;
   };
 
-  // selection evenement
+  // Soumission du Formulaire (Ajout/Modification)
+  const handleFormSubmit = (formData) => {
+    const eventData = {
+      title: formData.title,
+      date: formatDateForStorage(formData.date),
+      Time: formData.startTime,
+      duration: formData.duration,
+      récurrence: formData.recurring ? "true" : "false",
+      location: formData.place,
+      description: formData.description
+    };
+
+    if (selectedEvent && selectedEvent._id) {
+      // Modification (Update)
+      const eventToUpdate = {
+        ...eventData,
+        _id: selectedEvent._id,
+        _rev: selectedEvent._rev // Essential for update in CouchDB
+      };
+
+      fetch(dbUrl + eventToUpdate._id, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(eventToUpdate)
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.ok) {
+            // Update successful, fetch the new list to get the new _rev
+            fetchEvents();
+            setSelectedEvent(null);
+          } else {
+            console.error('Error updating event:', data);
+          }
+        })
+        .catch(err => console.error('Error in PUT request:', err));
+
+    } else {
+      // Ajout (Create) - Use POST for new docs in CouchDB
+      fetch(dbUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(eventData)
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.ok) {
+            // Creation successful, fetch the new list to include _id and _rev
+            fetchEvents();
+          } else {
+            console.error('Error creating event:', data);
+          }
+        })
+        .catch(err => console.error('Error in POST request:', err));
+    }
+  };
+
+  // Suppression d'événement
+  const handleDeleteEvent = () => {
+    if (selectedEvent && selectedEvent._id && selectedEvent._rev) {
+      const deleteUrl = `${dbUrl}${selectedEvent._id}?rev=${selectedEvent._rev}`;
+
+      fetch(deleteUrl, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.ok) {
+            // Deletion successful, refresh the event list
+            fetchEvents();
+            setSelectedEvent(null);
+          } else {
+            console.error('Error deleting event:', data);
+          }
+        })
+        .catch(err => console.error('Error in DELETE request:', err));
+    }
+  };
+
+  // Sélectionner un événement
   const handleEventSelect = (event) => {
     setSelectedEvent(event);
   };
 
-  // delete evenement
-  const handleDeleteEvent = () => {
-    if (selectedEvent) {
-      setEvents(prev => prev.filter(event => event !== selectedEvent));
-      setSelectedEvent(null);
-    }
-  };
-
-  // annuler modiff
+  // Annuler la modification
   const handleCancelEdit = () => {
     setSelectedEvent(null);
   };
+
+  // ... (getUpcomingEvents and getWeekEvents logic remains the same)
 
   // evenements à venir, ligne du bas
   const getUpcomingEvents = () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const nextWeek = new Date();
-    nextWeek.setDate(today.getDate() + 7);
-    nextWeek.setHours(23, 59, 59, 999);
-
     return events
-      .filter(event => { //algo pour les mettre dans l'ordre
+      .filter(event => {
         try {
+          // Parse DD/MM/YYYY
           const [day, month, year] = event.date.split('/');
           const eventDate = new Date(year, month - 1, day);
           return eventDate >= today;
@@ -121,38 +165,59 @@ function App() {
   // evenement semaine actuelle
   const getWeekEvents = () => {
     const weekEvents = {};
+    // Days in French, starting Monday
     const days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
   
-    // Structure
+    // Structure initialization
     days.forEach(day => {
       weekEvents[day] = {};
     });
     
-    if (!Array.isArray(events)) return weekEvents;    
+    if (!Array.isArray(events)) return weekEvents; 
     
-    // placement evenement à revoir
+    // Get the start of the current week (Monday)
+    const now = new Date();
+    const currentDay = now.getDay(); // 0 is Sunday, 1 is Monday
+    const diff = now.getDate() - currentDay + (currentDay === 0 ? -6 : 1); // Adjust for Monday start
+    const startOfWeek = new Date(now.setDate(diff));
+    startOfWeek.setHours(0, 0, 0, 0);
+    
+    // Get the end of the current week (Sunday)
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    endOfWeek.setHours(23, 59, 59, 999);
+    
     events.forEach(event => {
-    try {
-      const [day, month, year] = event.date.split('/');
-      const eventDate = new Date(year, month - 1, day);
-      const dayIndex = eventDate.getDay();
-      const dayName = days[dayIndex === 0 ? 6 : dayIndex - 1];
-      const hour = event.Time?.split(':')[0]; // optional chaining
+      try {
+        const [day, month, year] = event.date.split('/');
+        const eventDate = new Date(year, month - 1, day);
+        eventDate.setHours(0, 0, 0, 0); // Normalize time for comparison
 
-      if (!weekEvents[dayName][hour]) {
-        weekEvents[dayName][hour] = [];
+        // Check if the event falls within the current calendar week (Monday to Sunday)
+        if (eventDate >= startOfWeek && eventDate <= endOfWeek) {
+          const dayIndex = eventDate.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+          // Map to French day names starting Monday
+          const dayName = days[dayIndex === 0 ? 6 : dayIndex - 1]; 
+          const hour = event.Time?.split(':')[0]; // optional chaining
+
+          if (dayName && hour) {
+            if (!weekEvents[dayName][hour]) {
+              weekEvents[dayName][hour] = [];
+            }
+            weekEvents[dayName][hour].push(event);
+          }
+        }
+      } catch (error) {
+        console.warn('Erreur de format de date pour l\'affichage:', event.date, error);
       }
-      weekEvents[dayName][hour].push(event);
-    } catch (error) {
-      console.warn('Erreur de format de date:', event.date);
-    }
-  });
+    });
 
-  return weekEvents;
+    return weekEvents;
   };
 
   const weekEvents = getWeekEvents();
   const upcomingEvents = getUpcomingEvents();
+
 
   return (
     <>
@@ -168,17 +233,14 @@ function App() {
             <thead>
               <tr>
                 <th scope="col" className='time-column'>Heure</th>
-                <th scope="col" className='day-column'>Lundi</th>
-                <th scope="col" className='day-column'>Mardi</th>
-                <th scope="col" className='day-column'>Mercredi</th>
-                <th scope="col" className='day-column'>Jeudi</th>
-                <th scope="col" className='day-column'>Vendredi</th>
-                <th scope="col" className='day-column'>Samedi</th>
-                <th scope="col" className='day-column'>Dimanche</th>
+                {['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'].map(day => (
+                  <th key={day} scope="col" className='day-column'>{day}</th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {Array.from({ length: 12 }, (_, i) => i * 2).map(hour => (
+              {/* Generate rows for 00:00, 02:00, ..., 22:00 */}
+              {Array.from({ length: 12 }, (_, i) => String(i * 2).padStart(2, '0')).map(hour => (
                 <tr key={hour}>
                   <td className="hour-cell">{hour}:00</td>
                   {['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'].map(day => (
@@ -187,9 +249,9 @@ function App() {
                         weekEvents[day][hour].map((event, index) => (
                           <div
                             key={index}
-                            className={`event ${event.récurrence === "true" ? 'recurrent' : 'onetime'}`} //couleur recurence
+                            className={`event ${event.récurrence === "true" ? 'recurrent' : 'onetime'}`}
                             onClick={() => handleEventSelect(event)}
-                            title={`${event.title} - ${event.Time}`}
+                            title={`${event.title} - ${event.Time} - ${event.date}`}
                           >
                             <strong>{event.title}</strong>
                             <span className="event-time">{event.Time}</span>
@@ -217,7 +279,7 @@ function App() {
       <div className="upcoming-events">
         <h2>Événements à Venir</h2>
         {upcomingEvents.length === 0 ? (
-          <p className="no-events">Aucun événement à venir cette semaine</p>
+          <p className="no-events">Aucun événement à venir</p>
         ) : (
           <ol>
             {upcomingEvents.map((event, index) => (
