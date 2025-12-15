@@ -125,7 +125,7 @@ L'interface est divisée en trois parties distinctes:
 
 Pour notre première version, nous avons décidé d'écrire l'intégralité du code en HTML pur pour bien structurer la page vis-à-vis de la maquette. Pour cette première version du prototype l'échantillon de données est chargé àl'intéreur du  code de manière statique et les fonctionnalités implémentées ne sont que celles nécessaires pour suivre le scénario prioritaire (Consulter la page).
 
-<img width="1920" height="1162" alt="Screenshot 2025-12-08 at 16-44-10 moz-todo-react" src="[https://github.com/user-attachments/assets/86bb4f3e-3e17-4da8-8862-14d1a81c63e4](https://github.com/user-attachments/assets/86bb4f3e-3e17-4da8-8862-14d1a81c63e4)" />
+[<img width="1920" height="1162" alt="Screenshot 2025-12-08 at 16-44-10 moz-todo-react" src="[https://github.com/user-attachments/assets/86bb4f3e-3e17-4da8-8862-14d1a81c63e4](https://github.com/user-attachments/assets/86bb4f3e-3e17-4da8-8862-14d1a81c63e4)" />](https://github.com/UTT-GL03/Calendes/blob/main/Screenshot%202025-12-08%20at%2016-44-10%20moz-todo-react.png)
 Fig.2 : Prototype de la page principale
 
 Ce premier site a posé plusieurs problèmes. Le premier, qui a été réglé dans la partie d'après, est la non-intéractivité du site : les ajouts/modifications/suppressions d'évènements ne se sont pas ; le tableau n'est pas responsive par rapport aux boîtes d'évènement. Le second problème principal est le fait que les évènements ne peuvent se mettre que par plage de 2h (les évènements de 10h05, 10h50, 11h12 et 11h52 sont tous dans la boîte 10h-12h). Il a été décidé, pour palier à ce problème, d'ordoner chronologiquement les évènements au sein de la boîte dans la suite.
