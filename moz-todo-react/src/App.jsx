@@ -5,6 +5,7 @@ import EventForm from './Composition/Evenement'
 function App() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [weekOffset, setWeekOffset] = useState(0);
   const dbUrl = 'http://localhost:5984/calendes/';
 
   // Helper function to fetch events
@@ -174,7 +175,7 @@ function App() {
   };
 
   // evenement semaine actuelle
-  const getWeekEvents = () => {
+  const getWeekEvents = (weekOffset) => {
     const weekEvents = {};
     // Days in French, starting Monday
     const days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
@@ -189,8 +190,9 @@ function App() {
     // Get the start of the current week (Monday)
     const now = new Date();
     const currentDay = now.getDay(); // 0 is Sunday, 1 is Monday
-    const diff = now.getDate() - currentDay + (currentDay === 0 ? -6 : 1); // Adjust for Monday start
-    const startOfWeek = new Date(now.setDate(diff));
+    const daysToMonday = currentDay === 0 ? 6 : currentDay - 1; // Jours à retirer pour atteindre le Lundi
+    const startOfWeek = new Date(now)
+    startOfWeek.setDate(now.getDate() - daysToMonday + (weekOffset * 7));
     startOfWeek.setHours(0, 0, 0, 0);
 
     // Get the end of the current week (Sunday)
@@ -226,7 +228,13 @@ function App() {
     return weekEvents;
   };
 
-  const weekEvents = getWeekEvents();
+  const weekEvents = getWeekEvents(weekOffset);
+  const nextweek = () => {
+    setWeekOffset(prevOffset => prevOffset + 1); // Incrémente l'index de la semaine
+  }
+  const prevweek = () => {
+    setWeekOffset(prevOffset => prevOffset - 1); // Ajout d'une fonction pour la semaine précédente
+  }
   const upcomingEvents = getUpcomingEvents();
 
 
@@ -257,9 +265,9 @@ function App() {
                   {['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'].map(day => (
                     <td key={day} className="day-cell">
                       {weekEvents[day] && weekEvents[day][hour] &&
-                        weekEvents[day][hour].map((event, index) => (
+                        weekEvents[day][hour].map((event) => (
                           <div
-                            key={index}
+                            key={event._id}
                             className={`event ${event.récurrence === "true" ? 'recurrent' : 'onetime'}`}
                             onClick={() => handleEventSelect(event)}
                             title={`${event.title} - ${event.Time} - ${event.date}`}
@@ -285,6 +293,14 @@ function App() {
             onCancel={handleCancelEdit}
           />
         </div>
+        <div className='nextweek'>
+          <button type="button" onClick={prevweek} className="prev-week-button">
+            Semaine Précédente
+          </button>
+          <button type="button" onClick={nextweek} className="next-week-button">
+            Semaine Suivante
+          </button>
+        </div>
       </div>
 
       <div className="upcoming-events">
@@ -293,8 +309,8 @@ function App() {
           <p className="no-events">Aucun événement à venir</p>
         ) : (
           <ol>
-            {upcomingEvents.map((event, index) => (
-              <li key={index}>
+            {upcomingEvents.map((event) => (
+              <li key={event._id}>
                 <div
                   className="upcoming-event"
                   onClick={() => handleEventSelect(event)}
