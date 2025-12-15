@@ -81,7 +81,7 @@ La conclusion est que plus les interfaces sont visuellement complexes, plus leur
 | google agenda | <ul><li>Produit d'appel </li><li>autre? (opaque)</li></ul> | L'outil s'intègre dans un écosystème, cet outil permet de renforcer l'emprise de la compagnie sur les utilisateurs 
 | zimbra.utt | <ul><li> outil openSource</li><li>Autre? (opaque)</li></ul> | Il y a des coûts d'hébergements et d'entretiens
 | Cozi | <ul><li>Publicités </li><li>abonnement</li></ul> | l'entreprise fait du profit soit par le revenu généré par les pubs, soit par les revenus des abonnées premium
-
+Tab.1 : Mesure de l'EcoIndex moyen de divers services d'agenda
 
 Google Agenda : Le produit est gratuit et ne présente pas de source de  revenu, il s'agit d'un produit d'appel pour l'ecosystème Google.
 
@@ -113,12 +113,37 @@ Les évènements sont liés à un agenda, il se composent d'attributs comme date
 Au vu des différents services comparés, des exigences environnementales exprimées plus haut et des scénarios retenus, nous avons défini pour notre prototype une maquette de l'interface :
 
 <img width="831" height="481" alt="calendes drawio" src="https://github.com/user-attachments/assets/0968b6d7-ed61-4578-af3a-0df45ecf9006" />
-
+Fig.1: Maquette de l'inerface
 
 L'interface est divisée en trois parties distinctes:
 - "Semaine actuelle" est une visualisation des événements de la semaine actuelle. Ces événements sont affichés sur la plage horaire où ils ont lieu, avec leur titre. Les événements avec un fond plein sont des événements dit "récurrents", ils se répètent tous les x unité de temps. Au contraire, les événements éphémères de la semaine sont présentés avec sans fond, qu'avec un contour.
 - "Semaines prochaines" est une liste d'événements ponctuels qui arrivent dans les semaines qui suivent. Ces événements sont présentés sous forme d'une liste déroulante dans l'ordre chronologique.
 - "Création/Modification" est l'outil principal. Sans sélection d'un événement déjà présent, il permet d'en créer un avec un titre, une date et heures, une récurrence s'il y en a une, un lieu et des informations connexes écrites. Si un événement est sélectionné, il permet de visualiser les détails de cet événement et de pouvoir les modifier.
+
+
+## Premier prototype
+
+Pour notre première version, nous avons décidé d'écrire l'intégralité du code en HTML pur pour bien structurer la page vis-à-vis de la maquette. Pour cette première version du prototype l'échantillon de données est chargé àl'intéreur du  code de manière statique et les fonctionnalités implémentées ne sont que celles nécessaires pour suivre le scénario prioritaire (Consulter la page).
+
+<img width="1920" height="1162" alt="Screenshot 2025-12-08 at 16-44-10 moz-todo-react" src="[https://github.com/user-attachments/assets/86bb4f3e-3e17-4da8-8862-14d1a81c63e4](https://github.com/user-attachments/assets/86bb4f3e-3e17-4da8-8862-14d1a81c63e4)" />
+Fig.2 : Prototype de la page principale
+
+Ce premier site a posé plusieurs problèmes. Le premier, qui a été réglé dans la partie d'après, est la non-intéractivité du site : les ajouts/modifications/suppressions d'évènements ne se sont pas ; le tableau n'est pas responsive par rapport aux boîtes d'évènement. Le second problème principal est le fait que les évènements ne peuvent se mettre que par plage de 2h (les évènements de 10h05, 10h50, 11h12 et 11h52 sont tous dans la boîte 10h-12h). Il a été décidé, pour palier à ce problème, d'ordoner chronologiquement les évènements au sein de la boîte dans la suite.
+
+
+## Second prototype / Passage au React
+
+Après avoir fait notre premier prototype, nous avions deux choix : passer par une bibliothèque avec notre code actuel ou passer maintenant en React. Nous avons décidé de recommencer le code avec du React. Ce changement nous a permis plus efficacement de trier et mettre les données dans les tableaux. 
+Cependant, certaines choses sont resté comme par exemple la mise en page, les couleurs et notre idée de minimalisme (pas de photographies, des données affichées minimales et une interface épurée).
+
+Avec le prototype actuel, il est possible d'obtenir une première estimation de l'impact écologique du frontend. Certes, le chargement dynamique des données n'est pas encore présent, mais nous avons déjà la possibilité d'évaluer l'effet de l'affichage des données et du framework. Cette analyse de l'impact (cf. Tab.3) est déjà prometteuse en mode "développement", mais surtout en mode "pré-production". Nous évaluons ici l'impact bénéfique de l'utilisation d'outils de développement Web comprenant la ["minification"](https://fr.wikipedia.org/wiki/Minification) (voir Wikipédia) du code d'une part, et la combinaison du code et des feuilles de style d'autre part.
+
+| |EcoIndex|GES (gCO2e)|Taille du DOM|Requêtes|Taille de la page (ko)|
+|---|---|---|---|---|---|
+|Mode "pré-production"|80 A 🟢 |1.39|212|5|1379|
+|Mode "développement"|76 B 🟢 |1.47|170|18|2485|
+
+Tab.2 Mesure de l'EcoIndex moyen de notre prototype, dans le cadre du scénario principal
 
 ## Passage à l'échelle
 
