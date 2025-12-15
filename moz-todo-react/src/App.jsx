@@ -131,22 +131,14 @@ function App() {
     setSelectedEvent(null);
   };
 
-  // ... (getUpcomingEvents and getWeekEvents logic remains the same)
-
-  // evenements à venir, ligne du bas
-  // evenements à venir, ligne du bas
   const getUpcomingEvents = () => {
-    // --- DEBUT DE LA MODIFICATION ---
-    // Calcule le début de la SEMAINE PROCHAINE
     const now = new Date();
     const currentDay = now.getDay(); // 0 est Dimanche, 1 est Lundi
-    // Calcule la date du Lundi de la semaine prochaine (7 jours après le Lundi de cette semaine)
     const diff = now.getDate() - currentDay + (currentDay === 0 ? -6 : 1) + 7;
     const startOfNextWeek = new Date(now.setDate(diff));
     startOfNextWeek.setHours(0, 0, 0, 0);
 
     const upcomingEventsCount = 5; // Nombre d'événements à afficher
-    // --- FIN DE LA MODIFICATION ---
 
     return events
       .filter(event => {
@@ -154,7 +146,6 @@ function App() {
           // Parse DD/MM/YYYY
           const [day, month, year] = event.date.split('/');
           const eventDate = new Date(year, month - 1, day);
-          // MODIFICATION : Compare avec le début de la SEMAINE PROCHAINE
           return eventDate >= startOfNextWeek;
         } catch {
           return false;
@@ -166,26 +157,69 @@ function App() {
           const [dayB, monthB, yearB] = b.date.split('/');
           const dateA = new Date(yearA, monthA - 1, dayA);
           const dateB = new Date(yearB, monthB - 1, dayB);
-          return dateA - dateB;
-        } catch {
+          const dateComparison = dateA - dateB;
+
+          if (dateComparison !== 0) {
+            return dateComparison;
+          }
+
+          const parseTime = (timeString) => {
+            if (!timeString) return 0;
+            const [hours, minutes] = timeString.split(':').map(Number);
+            return (hours * 60) + minutes;
+          };
+
+          const timeA = parseTime(a.Time);
+          const timeB = parseTime(b.Time);
+
+          return timeA - timeB;
+
+        } catch (e) {
+          console.warn('Erreur de tri des événements', e);
           return 0;
         }
       })
-      .slice(0, upcomingEventsCount); // Utilise la variable pour la clarté
+      .slice(0, upcomingEventsCount);
   };
 
   // evenement semaine actuelle
   const getWeekEvents = (weekOffset) => {
     const weekEvents = {};
-    // Days in French, starting Monday
     const days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 
-    // Structure initialization
     days.forEach(day => {
       weekEvents[day] = {};
     });
 
     if (!Array.isArray(events)) return weekEvents;
+
+    const parseTime = (timeString) => {
+        if (!timeString) return 0;
+        const [hours, minutes] = timeString.split(':').map(Number);
+        return (hours * 60) + minutes;
+    };
+
+    const sortedEvents = [...events].sort((a, b) => {
+        try {
+            const [dayA, monthA, yearA] = a.date.split('/');
+            const [dayB, monthB, yearB] = b.date.split('/');
+            const dateA = new Date(yearA, monthA - 1, dayA);
+            const dateB = new Date(yearB, monthB - 1, dayB);
+            
+            const dateComparison = dateA - dateB;
+
+            if (dateComparison !== 0) {
+                return dateComparison;
+            }
+            
+            // Si les dates sont égales, trier par heure exacte
+            return parseTime(a.Time) - parseTime(b.Time);
+
+        } catch (e) {
+            console.warn('Erreur de tri des événements', e);
+            return 0;
+        }
+    });
 
     // Get the start of the current week (Monday)
     const now = new Date();
@@ -200,18 +234,16 @@ function App() {
     endOfWeek.setDate(startOfWeek.getDate() + 6);
     endOfWeek.setHours(23, 59, 59, 999);
 
-    events.forEach(event => {
+    sortedEvents.forEach(event => {
       try {
         const [day, month, year] = event.date.split('/');
         const eventDate = new Date(year, month - 1, day);
-        eventDate.setHours(0, 0, 0, 0); // Normalize time for comparison
 
         // Check if the event falls within the current calendar week (Monday to Sunday)
         if (eventDate >= startOfWeek && eventDate <= endOfWeek) {
-          const dayIndex = eventDate.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
-          // Map to French day names starting Monday
+          const dayIndex = eventDate.getDay(); 
           const dayName = days[dayIndex === 0 ? 6 : dayIndex - 1];
-          const hour = event.Time?.split(':')[0]; // optional chaining
+          const hour = event.Time?.split(':')[0]; 
 
           if (dayName && hour) {
             if (!weekEvents[dayName][hour]) {
