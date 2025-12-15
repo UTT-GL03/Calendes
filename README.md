@@ -125,7 +125,8 @@ L'interface est divisée en trois parties distinctes:
 
 Pour notre première version, nous avons décidé d'écrire l'intégralité du code en HTML pur pour bien structurer la page vis-à-vis de la maquette. Pour cette première version du prototype l'échantillon de données est chargé àl'intéreur du  code de manière statique et les fonctionnalités implémentées ne sont que celles nécessaires pour suivre le scénario prioritaire (Consulter la page).
 
-[<img width="1920" height="1162" alt="Screenshot 2025-12-08 at 16-44-10 moz-todo-react" src="[https://github.com/user-attachments/assets/86bb4f3e-3e17-4da8-8862-14d1a81c63e4](https://github.com/user-attachments/assets/86bb4f3e-3e17-4da8-8862-14d1a81c63e4)" />](https://github.com/UTT-GL03/Calendes/blob/main/Screenshot%202025-12-08%20at%2016-44-10%20moz-todo-react.png)
+<img width="831" height="481" alt="calendes premier prototype" src="https://github.com/user-attachments/assets/86bb4f3e-3e17-4da8-8862-14d1a81c63e4" />
+
 
 Fig.2 : Prototype de la page principale
 
