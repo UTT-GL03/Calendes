@@ -189,6 +189,7 @@ ESTIMATES
 | greenframe-runner         | 0.00075   | 0.000045  | 0.0     | 0.0012     | 0.066     | 0.068    |
 | calendes-static_hosting-1 | 0.0000034 | 0.0000028 | 0.0     | 0.0012     | 0.0       | 0.0012   |
 | calendes-backend-1        | 0.00068   | 0.000051  | 0.0     | 1.3e-7     | 0.0       | 0.00074  |
+
 Tab.4: mesure et estimations de la consommation énergétique après l'implémentation de couchDB
 
 L'empreinte estimée est de 30.813 mg eq. co2 ± 1.9% (69.713 mWh).
@@ -211,6 +212,7 @@ ESTIMATES
 | greenframe-runner         | 0.0024    | 0.000054  | 0.0     | 0.0083     | 0.069     | 0.080    |
 | calendes-static_hosting-1 | 0.0000031 | 0.0000030 | 0.0     | 0.0012     | 0.0       | 0.0012   |
 | calendes-backend-1        | 0.0024    | 0.000052  | 0.0     | 0.0071     | 0.0       | 0.0096   |
+
 Tab.5: mesure et estimations de la consommation énergétique sur application v1.0.0
 
 L'empreinte estimée est de 39.994 mg eq. co2 ± 0.6% (90.485 mWh).
@@ -253,6 +255,7 @@ ESTIMATES
 | greenframe-runner         | 0.019     | 0.000079  | 0.0     | 0.080      | 0.081     | 0.18     |
 | calendes-static_hosting-1 | 0.0000034 | 0.0000034 | 0.0     | 0.0012     | 0.0       | 0.0012   |
 | calendes-backend-1        | 0.019     | 0.000095  | 0.0     | 0.079      | 0.0       | 0.099    |
+
 Tab.7: mesure et estimations de la consommation énergétique avec tri chronologique des données
 
 L'empreinte estimée est de 123.824 mg eq. co2 ± 0.3% (280.144 mWh).
