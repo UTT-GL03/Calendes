@@ -168,8 +168,101 @@ Nous pouvons récolter et consulter les mesures nécessaires à la production de
 | 4. Modifier l'évènement            | 83 A 🟢 <br/> 39 D 🟡 | 1.34<br/>2.22  | 178 <br/> 2845 | 5       | 214.819<br/> 1143.014
 | 5. Sauvegarder les modifications   | 83 A 🟢 <br/> 39 D 🟡 | 1.34<br/>2.22  | 176 <br/> 2843 | 5       | 214.819<br/> 1143.014
 
+Tab.3 : Tableau de l'évolution de l'écoindx après le passage à l'échelle
+
 Le passage à l'échelle montre bien l'augmentation du DOM de la page passant de 176 à 2 843 ainsi que le poids de la page passant de 215 Ko à 1 143 Ko à l'ouverture.
 
+### Mesure de la consommation énergétique liée à la consultation
+
+#### Première mesure avec couchDB
+
+MEASUREMENTS
+|  (index)                 | cpu (s)    | écran (s) | temps total (s)  | memoire (Bits)   | disk (Bits) | réseau (Bits) |
+|--------------------------:|-----------:|-----------:|--------------:|----------:|---------:|------------:|
+| greenframe-runner         | 0.0602   | 16.9     | 18.1        | 1.22e+8 | 0.00   | 2.27e+5   |
+| calendes-static_hosting-1 | 0.000193 | 0.00     | 17.7        | 5.52e+6 | 0.00   | 2.27e+5   |
+| calendes-backend-1        | 0.0391   | 0.00     | 17.7        | 1.02e+8 | 0.00   | 25.0      |
+
+ESTIMATES
+| (index)                   | cpu (Wh)    | mémoire (Wh)    | disk (Wh) | réseau (Wh) | écran (Wh) | total (Wh) |
+|--------------------------:|------------:|------------:|----------:|-------------:|------------:|-----------:|
+| greenframe-runner         | 0.00075   | 0.000045  | 0.0     | 0.0012     | 0.066     | 0.068    |
+| calendes-static_hosting-1 | 0.0000034 | 0.0000028 | 0.0     | 0.0012     | 0.0       | 0.0012   |
+| calendes-backend-1        | 0.00068   | 0.000051  | 0.0     | 1.3e-7     | 0.0       | 0.00074  |
+Tab.4: mesure et estimations de la consommation énergétique après l'implémentation de couchDB
+
+L'empreinte estimée est de 30.813 mg eq. co2 ± 1.9% (69.713 mWh).
+
+Cette première mesure de la consommation a été faite après l'implémentation de la base de donnée à distance avec couchDB.
+
+
+#### Mesure sur notre application complètement fonctionnelle 
+
+MEASUREMENTS
+| (index)                   | cpu (s)    | écran (s) | temps total (s) | mémoire (B)   | disk (B) | réseau (B) |
+|--------------------------:|------------:|------------:|----------:|-------------:|------------:|-----------:|
+| greenframe-runner         | 0.194    | 17.7     | 19.1        | 1.41e+8 | 0.00   | 1.62e+6   |
+| calendes-static_hosting-1 | 0.000176 | 0.00     | 18.8        | 5.57e+6 | 0.00   | 2.28e+5   |
+| calendes-backend-1        | 0.137    | 0.00     | 18.8        | 9.84e+7 | 0.00   | 1.39e+6   |
+
+ESTIMATES
+| (index)                   | cpu (Wh)    | mémoire (Wh)    | disk (Wh) | réseau (Wh) | écran (Wh) | total (Wh) |
+|--------------------------:|------------:|------------:|----------:|-------------:|------------:|-----------:|
+| greenframe-runner         | 0.0024    | 0.000054  | 0.0     | 0.0083     | 0.069     | 0.080    |
+| calendes-static_hosting-1 | 0.0000031 | 0.0000030 | 0.0     | 0.0012     | 0.0       | 0.0012   |
+| calendes-backend-1        | 0.0024    | 0.000052  | 0.0     | 0.0071     | 0.0       | 0.0096   |
+Tab.5: mesure et estimations de la consommation énergétique sur application v1.0.0
+
+L'empreinte estimée est de 39.994 mg eq. co2 ± 0.6% (90.485 mWh).
+
+#### Mesure après multiplication des données par 10
+
+MEASUREMENTS
+| (index)                   | cpu (s)    | écran (s) | temps total (s) | mémoire (B)   | disk (B) | réseau (B) |
+|--------------------------:|------------:|------------:|----------:|-------------:|------------:|-----------:|
+| greenframe-runner         | 1.25     | 20.8     | 22.1        | 1.78e+8 | 0.00   | 1.56e+7   |
+| calendes-static_hosting-1 | 0.000196 | 0.00     | 21.8        | 5.54e+6 | 0.00   | 2.28e+5   |
+| calendes-backend-1        | 1.05     | 0.00     | 21.8        | 1.54e+8 | 0.00   | 1.54e+7   |
+
+ESTIMATES
+
+| (index)                   | cpu (Wh)    | mémoire (Wh)    | disk (Wh) | réseau (Wh) | écran (Wh) | total (Wh) |
+|--------------------------:|------------:|------------:|----------:|-------------:|------------:|-----------:|
+| greenframe-runner         | 0.016     | 0.000079  | 0.0     | 0.080      | 0.081     | 0.18     |
+| calendes-static_hosting-1 | 0.0000034 | 0.0000034 | 0.0     | 0.0012     | 0.0       | 0.0012   |
+| calendes-backend-1        | 0.018     | 0.000095  | 0.0     | 0.079      | 0.0       | 0.097    |
+
+Tab.6: mesure et estimations de la consommation énergétique avec 10 foix plus de données
+
+L'empreinte estimée est de 121.64 mg eq. co2 ± 0.1% (275.203 mWh).
+
+
+#### Mesure après tri chronologique des événements
+
+MEASUREMENTS
+| (index)                   | cpu (s)    | screen (s) | totalTime (s) | mem (B)   | disk (B) | network (B) |
+|--------------------------:|------------:|------------:|----------:|-------------:|------------:|-----------:|
+| greenframe-runner         | 1.49     | 20.9     | 22.1        | 1.78e+8 | 0.00   | 1.57e+7   |
+| calendes-static_hosting-1 | 0.000193 | 0.00     | 21.8        | 5.54e+6 | 0.00   | 2.29e+5   |
+| calendes-backend-1        | 1.10     | 0.00     | 21.8        | 1.54e+8 | 0.00   | 1.55e+7   |
+
+ESTIMATES
+
+| (index)                   | cpu (Wh)    | mem (Wh)    | disk (Wh) | network (Wh) | screen (Wh) | total (Wh) |
+|--------------------------:|------------:|------------:|----------:|-------------:|------------:|-----------:|
+| greenframe-runner         | 0.019     | 0.000079  | 0.0     | 0.080      | 0.081     | 0.18     |
+| calendes-static_hosting-1 | 0.0000034 | 0.0000034 | 0.0     | 0.0012     | 0.0       | 0.0012   |
+| calendes-backend-1        | 0.019     | 0.000095  | 0.0     | 0.079      | 0.0       | 0.099    |
+Tab.7: mesure et estimations de la consommation énergétique avec tri chronologique des données
+
+L'empreinte estimée est de 123.824 mg eq. co2 ± 0.3% (280.144 mWh).
+
+
+## Bilan et Perspectives
+
+Lors de ce cours, nous avons utilisé GreenFrame et GreenIT. Nous avons beaucoup appris et cela nous a notamment permis d'en venir à plusieurs réalisations qui nous ont étonné.
+Tout d'abord, nous avons été surpris par les différences des mesures entres les deux outils. Sur la dernière version de notre application, GreenFrame estime l'empreinte de notre application à 0.124 gC02eq alors que GreenIT l'estime à 1,7 gC02eq. Cette différence peut notamment s'expliquer par la difficulté à évoluer l'impact écologique réel d'une appilcation web mais il s'explique avant tout par les différences dans la manière de mesurer des deux outils. GreenFrame évalue l'impact de la consultation seulement alors que GreenIt a une évaluation plus globale.
+Nous avons aussi été surpris par l'impact écologique des infrastucture notamment présenté lors de la fresque du numérique où bien que nous savions que la création des appareils avait un impact nous ne pensions pas qu'il était aussi important.
 
 
 
